@@ -3,6 +3,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import TerserWebpackPlugin from "terser-webpack-plugin";
 import DotenvWebpackPlugin from "dotenv-webpack";
+import FaviconsWebpackPlugin from "favicons-webpack-plugin";
 
 export default function(_env, argv) {
   const isProduction = argv.mode === "production";
@@ -77,6 +78,10 @@ export default function(_env, argv) {
         }),
         new DotenvWebpackPlugin({
             systemvars: true,
+        }),
+        new FaviconsWebpackPlugin({
+            logo: "./src/favicon.png",
+            mode: "light",
         }),
     ].filter(Boolean),
     optimization: {
