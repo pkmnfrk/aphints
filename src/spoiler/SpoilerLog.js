@@ -4,7 +4,7 @@ import World from "./World.js";
 import LocationItem from "./LocationItem.js";
 import Game from "./games/Game.js";
 
-const defaultPlayerName = "pkmnfrk-pkred";
+let lastPlayerName = localStorage.lastPlayerName;
 
 export default class SpoilerLog {
     /** @type {string} */
@@ -14,14 +14,17 @@ export default class SpoilerLog {
     /** @type {Record<string, World>} */
     worlds = {};
 
-    static parse(text) {
+    static parse(text, needNameCallback) {
         const reader = new TextReader(text);
         const spoiler = new SpoilerLog();
 
         let handler = SpoilerLog.#handleHeaderLine;
 
         let line = reader.readLine();
-        let tempData = {};
+        let tempData = {
+            needNameCallback,
+        };
+        // console.log(needNameCallback);
         while(line !== null) {
             switch(line) {
                 case "Playthrough:":
@@ -81,7 +84,20 @@ export default class SpoilerLog {
             }
 
             if(key === "Game") {
-                const {playerId = 1, playerName = defaultPlayerName} = tempData;
+                if(!tempData.playerName) {
+                    if(tempData.needNameCallback) {
+                        tempData.playerName = tempData.needNameCallback();
+                        localStorage.lastPlayerName = tempData.playerName;
+                        lastPlayerName = tempData.playerName;
+                    }
+
+                    if(!lastPlayerName) {
+                        tempData.playerName = "default";
+                    }
+                }
+
+                
+                const {playerId = 1, playerName = lastPlayerName} = tempData;
                 let game = Games.getGame(value);
                 tempData.currentWorld = new World(playerId, playerName, game);
                 spoiler.worlds[playerName] = tempData.currentWorld;
@@ -115,7 +131,7 @@ export default class SpoilerLog {
             result = this.#checkLineSP.exec(line);
         }
         if(result) {
-            const { location, checkWorld = defaultPlayerName, item, itemWorld = defaultPlayerName } = result.groups;
+            const { location, checkWorld = lastPlayerName, item, itemWorld = lastPlayerName } = result.groups;
 
             const world = spoiler.worlds[checkWorld];
             //const sphereItem = new LocationItem(checkWorld, itemWorld, item, line);
@@ -147,7 +163,7 @@ export default class SpoilerLog {
             result = this.#locationLineSP.exec(line);
         }
         if(result) {
-            const { location, checkWorld = defaultPlayerName, item, itemWorld = defaultPlayerName } = result.groups;
+            const { location, checkWorld = lastPlayerName, item, itemWorld = lastPlayerName } = result.groups;
             const world = spoiler.worlds[checkWorld];
             const forWorld = spoiler.worlds[itemWorld];
             const locationItem = new LocationItem(checkWorld, itemWorld, item, forWorld.game.classifyItem(item, forWorld), location);
@@ -177,7 +193,7 @@ export default class SpoilerLog {
             result = this.#locationLineSP.exec(line);
         }
         if(result) {
-            const { item: location, itemWorld:checkWorld = defaultPlayerName } = result.groups;
+            const { item: location, itemWorld:checkWorld = lastPlayerName } = result.groups;
             const world = spoiler.worlds[checkWorld];
 
             world.unreachableItems.push(location);
