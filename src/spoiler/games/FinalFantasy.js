@@ -1,6 +1,7 @@
 import Game from "./Game.js";
 import LocationItem from "spoiler/LocationItem.js";
 import { TYPE_IMPORTANT, TYPE_JUNK, TYPE_PROGRESSION } from "./constants.js";
+import { easeOutSine } from "easing-utils";
 
 const REGION_CARDIA = "Cardia Islands";
 const REGION_CHAOS = "Temple of Fiends";
@@ -79,6 +80,13 @@ export default class FinalFantasy extends Game {
     //     return 2;
     // }
 
+    // get hintScalingPercentage() {
+    //     return 0.4;
+    // }
+
+    // get hintScalingFormula() {
+    //     return easeOutSine;
+    // }
     /**
      * 
      * @param {LocationItem} item 

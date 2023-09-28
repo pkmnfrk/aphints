@@ -3,6 +3,7 @@ import SpoilerLog from "spoiler/SpoilerLog.js";
 import World from "spoiler/World.js";
 import HintHelper from "../HintHelper.js";
 import {TYPE_IMPORTANT} from "./constants.js";
+import { linear } from "easing-utils";
 
 export default class Game {
     #id;
@@ -50,6 +51,14 @@ export default class Game {
 
     get barrenCount() {
         return 3;
+    }
+
+    get hintScalingPercentage() {
+        return 0.5;
+    }
+
+    get hintScalingFormula() {
+        return linear;
     }
 
     /**
@@ -103,8 +112,10 @@ export default class Game {
         ret.push(...sometimes);
         ret.push(...barren);
 
+        // console.log("Total hints", totalHints);
+
         HintHelper.populateWayHints(spoiler, world, ret, importantChecks, hintedLocations, totalHints, includeSpoilers);
-        
+        // console.log("final hints", ret);
 
         return ret;
     }

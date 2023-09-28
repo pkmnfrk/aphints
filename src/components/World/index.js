@@ -26,6 +26,7 @@ export default function World({spoiler, world, onDisconnect}) {
         const random = new Random(spoiler.seed);
         return random.shuffle(world.game.produceHints(spoiler, random, world, world.game.hintCount));
     });
+    // console.log(hints);
     const [ready, setReady] = useState(false);
 
     const onCollectedItem = (slot, location, item) => {
@@ -50,9 +51,9 @@ export default function World({spoiler, world, onDisconnect}) {
     };
 
     const apClient = useArchipelago(playerData.server, playerData.port, world.game.name, world.name, onAuthenticated, onCollectedItem, onDisconnect);
-    const desiredHints = HintMath.hintsForChecks(checkedLocations.length, world.locations.length, hints.length);
+    const desiredHints = HintMath.hintsForChecks(checkedLocations.length, world.locations.length, hints.length, world.game);
     const producedHints = hints.slice(0, desiredHints);
-    const nextHint = producedHints.length < hints.length ? HintMath.checksForHint(producedHints.length + 1, checkedLocations.length, world.locations.length, hints.length) : null;
+    const nextHint = producedHints.length < hints.length ? HintMath.checksForHint(producedHints.length + 1, checkedLocations.length, world.locations.length, hints.length, world.game) : null;
 
     // console.log("Hints", desiredHints, nextHint);
     const dataPackage = apClient.data.package.get(world.game.name)

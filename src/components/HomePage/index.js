@@ -7,7 +7,7 @@ import Dump from "components/Dump/index.js";
 import styles from "./index.icss";
 import Random from "util/Random.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setSeed, setName, setSlot, unsetSlot } from "features/playerDataSlice.js";
+import { setSeed, setName, setSlot, unsetSlot, unsetSeed } from "features/playerDataSlice.js";
 
 export default function HomePage() {
     /**
@@ -37,8 +37,12 @@ export default function HomePage() {
                         const file = item.getAsFile();
                         const text = await file.text();
                         localStorage.spoiler = text;
-                        const spoiler = SpoilerLog.parse(text);
+                        const spoiler = SpoilerLog.parse(text, () => {
+                            return prompt("This spoiler log doesn't contain a player name. Please enter the name of this player:");
+                        });
+                        console.log(spoiler);
                         setSpoiler(spoiler);
+                        dispatch(unsetSeed({}));
                         dispatch(setSeed({seed: spoiler.seed}))
                         // console.log(spoiler);
                     }
@@ -54,10 +58,17 @@ export default function HomePage() {
         };
 
         if(!spoiler && localStorage.spoiler) {
-            const s = SpoilerLog.parse(localStorage.spoiler);
-            setSpoiler(s);
-            console.log("Spoiler", s);
-            dispatch(setSeed({seed: s.seed}))
+            let spoiler = null;
+            try {
+                spoiler = SpoilerLog.parse(localStorage.spoiler);
+            } catch(e) {
+                console.error("Error parsing cached spoiler", e);
+            }
+            if(spoiler) {
+                setSpoiler(spoiler);
+                console.log("Spoiler", spoiler);
+                dispatch(setSeed({seed: spoiler.seed}))
+            }
         }
 
         document.addEventListener("dragover", onDragOver);
@@ -102,7 +113,6 @@ export default function HomePage() {
         const world = slot ? spoiler.worlds[slot.name] : null;
         
         return (<>
-            
             <p>Archipelago Version: {spoiler.archipelagoVersion}</p>
             {
                 connectError ? <div>Error connecting to server: {connectError.message ?? "unable to connect"}</div> : null
