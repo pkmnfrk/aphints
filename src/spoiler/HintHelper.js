@@ -102,15 +102,13 @@ export default class HintHelper {
     static * createBarrenHints(spoiler, world, random, importantChecks, howMany) {
         
         // const importantRegionAreas = new Set(importantChecks.filter(c => c.region).map(c => c.regionArea));
-        const allRegions = [...new Set(world.locations.filter(l => l.region).map(l => l.regionArea))];
+        const allRegions = [...new Set(world.locations.filter(l => l.region && l.hintableBarren).map(l => l.regionArea))];
 
         // now, figure out which regions are actually barren
         const allBarrenRegions = random.shuffle(allRegions.filter(r => {
             const checks = world.locations.filter(l => l.region === r);
             for(const check of checks) {
-                const forWorld = spoiler.worlds[check.for];
-                const type = forWorld.game.classifyItem(check.item, forWorld);
-                if(type !== TYPE_JUNK) {
+                if(check.type !== TYPE_JUNK) {
                     return false;
                 }
             }
