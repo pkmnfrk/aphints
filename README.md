@@ -36,6 +36,7 @@ exists for the games in the following table, with each column meaning:
 | Doom 1993 | ✅ | ❌ | ✅ | Regions = levels
 | Factorio | ❌ | ❌ | ❌ | The way checks are stuctured makes it very difficult to generate hints.
 | Final Fantasy | ✅ | ❌ | ✅ | |
+| Link's Awakening DX | ✅ | ❌ | ✅ | |
 | Minecraft | ✅ | ❌ | ❌ | Regions = advancement categories.
 | Ocarina of Time | ❌ | ❌ | ❌ | This game already supports hints, adding them would be redundant
 | Pokémon Red / Blue | ✅ | ✅ | ✅ | Regions = cities/routes/dungeons. Will hint HMs, keys and other things
