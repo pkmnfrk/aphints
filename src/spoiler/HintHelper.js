@@ -135,7 +135,7 @@ export default class HintHelper {
      */
     static populateWayHints(spoiler, world, ret, importantChecks, hintedLocations, upTo, includeSpoilers) {
         var wayHints = [...this.createWayHints(spoiler, world, importantChecks, hintedLocations, includeSpoilers)];
-
+        // console.log("Way hints", wayHints);
         if(upTo) {
             const num = Math.max(upTo - ret.length, 0);
             // console.log("Up to:", upTo, "- actual hints:", num);
@@ -156,24 +156,29 @@ export default class HintHelper {
 
         for(const check of wayChecks) {
             if(alreadyHinted.has(check.regionArea)) {
+                // console.log("Rejecting", check.specificLocation, "because already hinted");
                 continue;
             }
             if(!check.hintableWay) {
+                // console.log("Rejecting", check.specificLocation, "because marked not hintable");
                 continue;
             }
 
             /** @type {Game} */
             const forGame = spoiler.worlds[check.for].game;
             if(!forGame.canItemBeWay(check.item)) {
+                // console.log("Rejecting", check.specificLocation, "because item can't be way");
                 continue;
             }
-            const type = forGame.classifyItem(check.item, spoiler.worlds[check.for]);
-            if(type === TYPE_JUNK || type === TYPE_PROGRESSION) {
+            if(check.type === TYPE_JUNK || check.type === TYPE_PROGRESSION) {
                 // don't hint junk (idk why there would be junk here) or only progression items
+                // console.log("Rejecting", check.specificLocation, "because", check.type, "is not eleigible");
                 continue;
             }
             if(includeSpoilers) {
                 yield `${check.regionArea} is ${world.game.wayOfThe} (contains ${check.item}${check.world !== check.for ? ` for ${check.for}` : ""})`;
+            } else {
+                yield `${check.regionArea} is ${world.game.wayOfThe}`;
             }
             alreadyHinted.add(check.regionArea);
         }
