@@ -1,5 +1,6 @@
 import Game from "./Game.js";
 
+import Blasphemous from "./Blasphemous.js";
 import Doom from "./Doom.js";
 import Factorio from "./Factorio.js";
 import FinalFantasy from "./FinalFantasy.js";
@@ -20,6 +21,7 @@ export default class Games {
     }
 
     static {
+        this.#addGame(new Blasphemous());
         this.#addGame(new Doom());
         this.#addGame(new Factorio());
         this.#addGame(new FinalFantasy());

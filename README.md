@@ -33,6 +33,7 @@ exists for the games in the following table, with each column meaning:
 
 | game | regions | misc hints | advanced items | notes |
 |-|-|-|-|-|
+| Blasphemous | ✅ | ❌ | ❌ | |
 | Doom 1993 | ✅ | ❌ | ✅ | Regions = levels
 | Factorio | ❌ | ❌ | ❌ | The way checks are stuctured makes it very difficult to generate hints.
 | Final Fantasy | ✅ | ❌ | ✅ | |
