@@ -1,0 +1,11 @@
+.dataTable {
+    width: 100%;
+}
+
+.dataTable tr:nth-child(even) td {
+    background-color: #008;
+}
+
+.dataTable tr:nth-child(odd) td {
+    background-color: #006;
+}

@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "ES6",
+        "target": "ES6",
+        "moduleResolution": "node",
+        "paths": {
+            "features/*": [
+                "./features/*"
+            ],
+            "spoiler/*": [
+                "./spoiler/*"
+            ],
+            "components/*": [
+                "./components/*"
+            ],
+            "util/*": [
+                "./util/*"
+            ],
+        }
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
