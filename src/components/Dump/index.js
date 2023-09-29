@@ -5,6 +5,7 @@ import SpoilerLog from "spoiler/SpoilerLog.js";
 import styles from "./index.icss";
 import {by} from "util/sort.js";
 import SortIndicator from "./SortIndicator.js";
+import HideableRegion from "./HideableRegion.js";
 
 /**
  * @typedef DumpOptions
@@ -22,40 +23,51 @@ export default function Dump({spoiler, world, onClose}) {
     const categorized = world.locations.filter(l => l.region);
     const random = new Random(randomSeed);
     const hints = world.game.produceHints(spoiler, random, world, 0, true);
+    const allItems = Object.values(spoiler.worlds).flatMap(w => w.locations).filter(l => l.for === world.name);
+
     hints.sort();
     return (
         <>
             <button onClick={() => setRandomSeed(Math.floor(Math.random() * 10000))}>Refresh</button>
             <p>Current user is {world.name} <button onClick={() => onClose(null)}>Go Back</button></p>
             {uncategorized.length ? <>
-            <h2>All Uncategorized Locations</h2>
-            {createLocationTable(uncategorized, "uncategorized")}
+            <HideableRegion title="All Uncategorized Locations" defaultOpen={false}>
+                {createLocationTable(uncategorized, "uncategorized")}
+            </HideableRegion>
             </> : null}
-            <h2>Sample hints</h2>
+            <HideableRegion title="Sample hints" defaultOpen={false}>
             <ul>
                 {hints.map((h, ix) => (
                     <li key={ix}>{h}</li>
                 ))}
             </ul>
-            {categorized.length ? <>
-            <h2>All Categorized Locations</h2>
-            {createLocationTable(categorized, "categorized")}
-            </> : null}
+            </HideableRegion>
 
-            <h2>Playthrough</h2>
-            {Object.entries(world.spheres).map(([sphere, locations], ix) => (
-                <div key={ix}>
-                    <h3>Sphere {sphere}</h3>
-                    {createLocationTable(locations, "playthrough")}
-                </div>
-            ))}
-            
+            {categorized.length ? 
+                <HideableRegion title="All Categorized Locations" defaultOpen={false}>
+                    {createLocationTable(categorized, "categorized")}
+                </HideableRegion>
+            : null}
+
+            <HideableRegion title="All Game Items" defaultOpen={false}>
+                {createLocationTable(allItems, "items", false)}
+            </HideableRegion>
+
+            <HideableRegion title="Playthrough" defaultOpen={false}>
+                {Object.entries(world.spheres).map(([sphere, locations], ix) => (
+                    <div key={ix}>
+                        <HideableRegion subtitle={`Sphere ${sphere}`}>
+                            {createLocationTable(locations, "playthrough")}
+                        </HideableRegion>
+                    </div>
+                ))}
+            </HideableRegion>
             
         </>
     );
 }
 
-function createLocationTable(locations, id) {
+function createLocationTable(locations, id, showFor = true) {
     const [sortColumn, setSortColumn] = useState(null);
     const ourLocations = [...locations];
     const dir = (sortColumn && sortColumn[0] === "!") ? "desc" : "asc";
@@ -106,7 +118,7 @@ function createLocationTable(locations, id) {
                 {/* <th>Raw</th> */}
                 <th onClick={() => setSort("item")}>Item <SortIndicator col="item" actual={sortColumn} /></th>
                 <th onClick={() => setSort("type")}>Type <SortIndicator col="type" actual={sortColumn} /></th>
-                <th onClick={() => setSort("for")}>For <SortIndicator col="for" actual={sortColumn} /></th>
+                {showFor ? <th onClick={() => setSort("for")}>For <SortIndicator col="for" actual={sortColumn} /></th> : null }
             </tr>
         </thead>
         <tbody>
@@ -118,7 +130,7 @@ function createLocationTable(locations, id) {
                 {/* <td>{l.raw}</td> */}
                 <td>{l.item}</td>
                 <td>{l.type}</td>
-                {l.for !== l.world ? <td>{l.for}</td> : null}
+                {showFor && l.for !== l.world ? <td>{l.for}</td> : null}
             </tr>
         ))}
         </tbody>
