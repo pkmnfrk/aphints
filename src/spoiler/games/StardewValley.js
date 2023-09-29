@@ -1,5 +1,6 @@
 import Game from "./Game.js";
 import LocationItem from "spoiler/LocationItem.js";
+import { TYPE_IMPORTANT, TYPE_JUNK } from "./constants.js";
 
 const REGION_SPRING_EVENTS = "Spring Events";
 const REGION_SUMMER_EVENTS = "Summer Events";
@@ -255,7 +256,7 @@ export default class StardewValley extends Game {
         if(result) {
             item.region = "The Museum";
             item.location = "Donations";
-            item.check = `${result.groups.count}${result.groups.what}`;
+            item.check = `${result.groups.count??""}${result.groups.what}`;
             return true;
         }
 
@@ -320,6 +321,16 @@ export default class StardewValley extends Game {
     filterLocation(item) {
         
         return true;
+    }
+
+    classifyItem(item) {
+        switch(item) {
+            case "Month End":
+            case "Victory":
+                return TYPE_JUNK;
+        }
+
+        return TYPE_IMPORTANT;
     }
 
 }
