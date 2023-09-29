@@ -14,21 +14,13 @@ jobs:
           node-version: '18'
       - run: npm i
       - run: npm run build
-      - uses: jakejarvis/s3-sync-action@master
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          args: '--exclude "*.html" --cache-control "public, max-age=604800, immutable" --delete'
-        env:
-          SOURCE_DIR: dist
-          AWS_S3_BUCKET: mcaron-aphints-website
-          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
-          AWS_DEFAULT_REGION: us-east-1
-      - uses: jakejarvis/s3-sync-action@master
-        with:
-          args: '--include "*.html" --cache-control no-cache --content-type text/html'
-        env:
-          SOURCE_DIR: dist
-          AWS_S3_BUCKET: mcaron-aphints-website
-          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
-          AWS_EGION: us-east-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: deploy javascript
+        run: aws s3 sync --exclude "*.html" --cache-control "public, max-age=604800, immutable" --delete dist s3://mcaron-aphints-website
+      - name: deploy html
+        run: aws s3 sync --include "*.html" --cache-control no-cache --content-type text/html --delete dist s3://mcaron-aphints-website
