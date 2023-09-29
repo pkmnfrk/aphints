@@ -50,6 +50,7 @@ export default class LinksAwakening extends Game {
             case "Hibiscus":
             case "Hookshot":
             case "Honeycomb":
+            case "Letter":
             case "Magic Powder":
             case "Magic Rod":
             case "Magnifying Glass":
