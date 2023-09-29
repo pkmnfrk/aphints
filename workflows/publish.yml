@@ -1,0 +1,23 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm i
+      - run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.aws_access_key_id }}" >> "$GITHUB_ENV"
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.aws_secret_access_key }}" >> "$GITHUB_ENV"
+          echo "AWS_DEFAULT_REGION=us-east-1" >> "$GITHUB_ENV"
+      - run: npm run build
+      - run: ./publish.sh
+
+
