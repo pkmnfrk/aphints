@@ -67,7 +67,7 @@ export default function Dump({spoiler, world, onClose}) {
     );
 }
 
-function createLocationTable(locations, id, cols = ["region", "location", "check", "item", "type"]) {
+function createLocationTable(locations, id, cols = ["region", "location", "check", "item", "type", "for"]) {
     const [sortColumn, setSortColumn] = useState(null);
     const ourLocations = [...locations];
     const dir = (sortColumn && sortColumn[0] === "!") ? "desc" : "asc";
