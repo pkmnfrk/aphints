@@ -50,7 +50,7 @@ export default function Dump({spoiler, world, onClose}) {
             : null}
 
             <HideableRegion title="All Game Items" defaultOpen={false}>
-                {createLocationTable(allItems, "items", ["item", "type"])}
+                {createLocationTable(allItems, "items", ["item", "type"], "type")}
             </HideableRegion>
 
             <HideableRegion title="Playthrough" defaultOpen={false}>
@@ -67,8 +67,8 @@ export default function Dump({spoiler, world, onClose}) {
     );
 }
 
-function createLocationTable(locations, id, cols = ["region", "location", "check", "item", "type", "for"]) {
-    const [sortColumn, setSortColumn] = useState(null);
+function createLocationTable(locations, id, cols = ["region", "location", "check", "item", "type", "for"], defaultSort = null) {
+    const [sortColumn, setSortColumn] = useState(defaultSort);
     const ourLocations = [...locations];
     const dir = (sortColumn && sortColumn[0] === "!") ? "desc" : "asc";
     
