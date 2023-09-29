@@ -155,6 +155,7 @@ export default class Blasphemous extends Game {
             case "Life Upgrade":
             case "Thorn Upgrade":
             case "Verses Spun from Gold":
+            case "Victory": //lol
             
                 return TYPE_JUNK;
         }
