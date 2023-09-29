@@ -6,6 +6,7 @@ import Factorio from "./Factorio.js";
 import FinalFantasy from "./FinalFantasy.js";
 import LinksAwakening from "./LinksAwakening.js";
 import Minecraft from "./Minecraft.js";
+import MuseDash from "./MuseDash.js";
 import OcarinaOfTime from "./OcarinaOfTime.js";
 import PokemonRedBlue from "./PokemonRedBlue.js";
 import StardewValley from "./StardewValley.js";
@@ -27,6 +28,7 @@ export default class Games {
         this.#addGame(new FinalFantasy());
         this.#addGame(new LinksAwakening());
         this.#addGame(new Minecraft());
+        this.#addGame(new MuseDash());
         this.#addGame(new OcarinaOfTime());
         this.#addGame(new PokemonRedBlue());
         this.#addGame(new StardewValley());
