@@ -2,6 +2,162 @@ import Game from "./Game.js";
 import LocationItem from "spoiler/LocationItem.js";
 import { TYPE_IMPORTANT, TYPE_JUNK, TYPE_PROGRESSION } from "./constants.js";
 
+const pokemon = {
+    "Bulbasaur": ["grass", "poison"],
+    "Ivysaur": ["grass", "poison"],
+    "Venusaur": ["grass", "poison"],
+    "Oddish": ["grass", "poison"],
+    "Gloom": ["grass", "poison"],
+    "Vileplume": ["grass", "poison"],
+    "Bellsprout": ["grass", "poison"],
+    "Weepinbell": ["grass", "poison"],
+    "Victreebel": ["grass", "poison"],
+    "Charmander": ["fire"],
+    "Charmeleon": ["fire"],
+    "Charizard": ["fire", "flying"],
+    "Vulpix": ["fire"],
+    "Ninetales": ["fire"],
+    "Growlithe": ["fire"],
+    "Arcanine": ["fire"],
+    "Squirtle": ["water"],
+    "Wartortle": ["water"],
+    "Blastoise": ["water"],
+    "Psyduck": ["water"],
+    "Golduck": ["water"],
+    "Poliwag": ["water"],
+    "Poliwhirl": ["water"],
+    "Poliwrath": ["water", "fighting"],
+    "Caterpie": ["bug"],
+    "Metapod": ["bug"],
+    "Butterfree": ["bug", "flying"],
+    "Weedle": ["bug", "poison"],
+    "Kakuna": ["bug", "poison"],
+    "Beedrill": ["bug", "poison"],
+    "Paras": ["bug", "grass"],
+    "Parasect": ["bug", "grass"],
+    "Venonat": ["bug", "poison"],
+    "Venomoth": ["bug", "poison"],
+    "Pidgey": ["normal", "flying"],
+    "Pidgeotto": ["normal", "flying"],
+    "Pidgeot": ["normal", "flying"],
+    "Spearow": ["normal", "flying"],
+    "Fearow": ["normal", "flying"],
+    "Rattata": ["normal"],
+    "Raticate": ["normal"],
+    "Clefairy": ["normal"],
+    "Clefable": ["normal"],
+    "Jigglypuff": ["normal"],
+    "Wigglytuff": ["normal"],
+    "Meowth": ["normal"],
+    "Persian": ["normal"],
+    "Ekans": ["poison"],
+    "Arbok": ["poison"],
+    "Nidoran F": ["poison"],
+    "Nidorina": ["poison"],
+    "Nidoqueen": ["poison", "ground"],
+    "Nidoran M": ["poison"],
+    "Nidorino": ["poison"],
+    "Nidoking": ["poison"],
+    "Zubat": ["poison", "flying"],
+    "Golbat": ["poison", "flying"],
+    "Pikachu": ["electric"],
+    "Raichu": ["electric"],
+    "Sandshrew": ["ground"],
+    "Sandslash": ["ground"],
+    "Diglett": ["ground"],
+    "Dugtrio": ["ground"],
+    "Mankey": ["fighting"],
+    "Primeape": ["fighting"],
+    "Machop": ["fighting"],
+    "Machoke": ["fighting"],
+    "Machamp": ["fighting"],
+    "Abra": ["psychic"],
+    "Kadabra": ["psychic"],
+    "Alakazam": ["psychic"],
+    "Tentacool": ["water", "poison"],
+    "Tentacruel": ["water", "poison"],
+    "Geodude": ["rock", "ground"],
+    "Graveler": ["rock", "ground"],
+    "Golem": ["rock", "ground"],
+    "Ponyta": ["fire"],
+    "Rapidash": ["fire"],
+    "Slowpoke": ["water"],
+    "Slowbro": ["water", "psychic"],
+    "Magnemite": ["electric"],
+    "Magneton": ["electric"],
+    "Farfetchd": ["normal", "flying"],
+    "Doduo": ["normal", "flying"],
+    "Dodrio": ["normal", "flying"],
+    "Seel": ["water"],
+    "Dewgong": ["water", "ice"],
+    "Grimer": ["poison"],
+    "Muk": ["poison"],
+    "Shellder": ["water"],
+    "Cloyster": ["water", "ice"],
+    "Gastly": ["ghost", "poison"],
+    "Haunter": ["ghost", "poison"],
+    "Gengar": ["ghost", "poison"],
+    "Onix": ["rock", "ground"],
+    "Drowzee": ["psychic"],
+    "Hypno": ["psychic"],
+    "Krabby": ["water"],
+    "Kingler": ["water"],
+    "Voltorb": ["electric"],
+    "Electrode": ["electric"],
+    "Exeggcute": ["grass", "psychic"],
+    "Exeggutor": ["grass", "psychic"],
+    "Cubone": ["ground"],
+    "Marowak": ["ground"],
+    "Hitmonlee": ["fighting"],
+    "Hitmonchan": ["fighting"],
+    "Lickitung": ["normal"],
+    "Koffing": ["poison"],
+    "Weezing": ["poison"],
+    "Rhyhorn": ["rock", "ground"],
+    "Rhydon": ["rock", "ground"],
+    "Chansey": ["normal"],
+    "Tangela": ["grass"],
+    "Kangaskhan": ["normal"],
+    "Horsea": ["water"],
+    "Seadra": ["water"],
+    "Goldeen": ["water"],
+    "Seaking": ["water"],
+    "Staryu": ["water"],
+    "Starmie": ["water", "psychic"],
+    "Mr Mime": ["psychic"],
+    "Scyther": ["bug", "flying"],
+    "Jynx": ["psychic", "ice"],
+    "Electabuzz": ["electric"],
+    "Magmar": ["fire"],
+    "Pinsir": ["bug"],
+    "Tauros": ["normal"],
+    "Magikarp": ["water"],
+    "Gyarados": ["water", "flying"],
+    "Lapras": ["water", "ice"],
+    "Ditto": ["normal"],
+    "Eevee": ["normal"],
+    "Vaporeon": ["water"],
+    "Jolteon": ["electric"],
+    "Flareon": ["fire"],
+    "Porygon": ["normal"],
+    "Omanyte": ["water", "rock"],
+    "Omastar": ["water", "rock"],
+    "Kabuto": ["water", "rock"],
+    "Kabutops": ["water", "rock"],
+    "Aerodactyl": ["rock", "flying"],
+    "Snorlax": ["normal"],
+    "Articuno": ["ice", "flying"],
+    "Zapdos": ["electric", "flying"],
+    "Moltres": ["fire", "flying"],
+    "Dratini": ["dragon"],
+    "Dragonair": ["dragon"],
+    "Dragonite": ["dragon", "flying"],
+    "Mewtwo": ["psychic"],
+    "Mew": ["psychic"],
+}
+
+const types = [...new Set(Object.values(pokemon).flat())];
+
 /** @extends {Game} */
 export default class PokemonRedBlue extends Game {
     
@@ -109,7 +265,33 @@ export default class PokemonRedBlue extends Game {
                     "Lift Key",
                     "Card Key",
                 ]
-            }
+            },
+
+            boss: {
+                items: [
+                    { location: "Rocket Hideout B4F - Giovanni Item", label: "Clearing the Rocket Hideout"},
+                    { location: "Lavender Mr. Fuji's House - Mr. Fuji", label: "Exorcising the Pokemon Tower" },
+                    { location: "Silph Co 11F - Silph Co President", label: "Liberating Silph Co" },
+                ]
+            },
+
+            ...Object.fromEntries((() => {
+                const ret = [];
+                for(const type of types) {
+                    const eligible = Object.entries(pokemon).filter(e => e[1].indexOf(type) !== -1).map(p => p[0]);
+                    
+                    ret.push(["dex-" + type, {
+                        label: `Catching a ${type} type Pokemon`,
+                        items: eligible.map(e => ({
+                            location: "Pokedex - " + e,
+                        })),
+                        condition: isDexsanity,
+                        notJunk: true,
+                    }]);
+                }
+
+                return ret;
+            })()),
         }
     }
 
@@ -136,12 +318,20 @@ export default class PokemonRedBlue extends Game {
                 items: [
                     "HM02 Fly",
                 ]
-            }
+            },
         }
     }
 
     get wayOfThe() {
         return "Way of the Master";
+    }
+
+    sometimesCount(world) {
+        return isDexsanity(world) ? 6 : 3;
+    }
+
+    hintCount(world) {
+        return isDexsanity(world) ? 23 : 20;
     }
 
     /**
@@ -263,6 +453,13 @@ export default class PokemonRedBlue extends Game {
 
         return TYPE_JUNK;
         // throw new Error("Unknown item " + item);
+    }
+
+    /**
+     * @param {LocationItem} item 
+     */
+    filterLocation(item) {
+        return item.region !== "Evolution";
     }
     
 }

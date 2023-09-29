@@ -25,7 +25,7 @@ export default function Dump({spoiler, world, onClose}) {
     const hints = world.game.produceHints(spoiler, random, world, 0, true);
     const allItems = Object.values(spoiler.worlds).flatMap(w => w.locations).filter(l => l.for === world.name);
 
-    hints.sort();
+    // hints.sort();
     return (
         <>
             <button onClick={() => setRandomSeed(Math.floor(Math.random() * 10000))}>Refresh</button>
@@ -67,7 +67,7 @@ export default function Dump({spoiler, world, onClose}) {
     );
 }
 
-function createLocationTable(locations, id, cols = ["region", "location", "check", "item", "type", "for"], defaultSort = null) {
+function createLocationTable(locations, id, cols = ["region", "location", "check", "raw", "item", "type", "for"], defaultSort = null) {
     const [sortColumn, setSortColumn] = useState(defaultSort);
     const ourLocations = [...locations];
     const dir = (sortColumn && sortColumn[0] === "!") ? "desc" : "asc";
@@ -93,7 +93,7 @@ function createLocationTable(locations, id, cols = ["region", "location", "check
     }
 
     if(id === "categorized") {
-        console.log("Sort func for", id, "is", sortFunction);
+        //console.log("Sort func for", id, "is", sortFunction);
     }
 
     if(sortFunction) {
@@ -115,7 +115,7 @@ function createLocationTable(locations, id, cols = ["region", "location", "check
                 {cols.indexOf("region") !== -1 ? <th onClick={() => setSort("region")}>Region <SortIndicator col="region" actual={sortColumn} /></th> : null}
                 {cols.indexOf("location") !== -1 ? <th onClick={() => setSort("region")}>Location</th> : null}
                 {cols.indexOf("check") !== -1 ? <th onClick={() => setSort("region")}>Check</th> : null}
-                {/* <th>Raw</th> */}
+                {cols.indexOf("raw") !== -1 ? <th>Raw</th> : null}
                 {cols.indexOf("item") !== -1 ? <th onClick={() => setSort("item")}>Item <SortIndicator col="item" actual={sortColumn} /></th> : null}
                 {cols.indexOf("type") !== -1 ? <th onClick={() => setSort("type")}>Type <SortIndicator col="type" actual={sortColumn} /></th> : null}
                 {cols.indexOf("for") !== -1 ? <th onClick={() => setSort("for")}>For <SortIndicator col="for" actual={sortColumn} /></th> : null }
@@ -127,7 +127,7 @@ function createLocationTable(locations, id, cols = ["region", "location", "check
                 {cols.indexOf("region") !== -1 ? <td>{l.region}</td> : null}
                 {cols.indexOf("location") !== -1 ? <td>{l.location}</td> : null}
                 {cols.indexOf("check") !== -1 ? <td>{l.check}</td> : null}
-                {/* <td>{l.raw}</td> */}
+                {cols.indexOf("raw") !== -1 ? <td>{l.raw}</td> : null}
                 {cols.indexOf("item") !== -1 ? <td>{l.item}</td> : null}
                 {cols.indexOf("type") !== -1 ? <td>{l.type}</td> : null}
                 {cols.indexOf("for") !== -1 && l.for !== l.world ? <td>{l.for}</td> : null}

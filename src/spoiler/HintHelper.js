@@ -47,17 +47,41 @@ export default class HintHelper {
                     if(world.unreachableItems.indexOf(item) !== -1) {
                         continue;
                     }
-                    entry.push([item, value.label]);
+                    const loc = this.findItem(spoiler, item, world.name);
+                    if(!loc) {
+                        continue;
+                    }
+                    entry.push(["item", loc, value.label]);
                 } else {
                     if(item.condition && !item.condition(world)) {
                         continue;
                     }
 
-                    if(world.unreachableItems.indexOf(item.item) !== -1) {
-                        continue;
-                    }
+                    if(item.item) {
+                        if(world.unreachableItems.indexOf(item.item) !== -1) {
+                            continue;
+                        }
 
-                    entry.push([item.item, item.label ?? value.label]);
+                        const loc = this.findItem(spoiler, item.item, world.name);
+                        if(!loc) {
+                            continue;
+                        }
+
+                        if(item.notJunk && loc.type === TYPE_JUNK) {
+                            continue;
+                        }
+                        entry.push(["item", loc, item.label ?? value.label]);
+                    } else if(item.location) {
+                        const loc = this.findLocation(spoiler, item.location, world.name);
+                        if(!loc) {
+                            continue;
+                        }
+
+                        if((item.notJunk ?? value.notJunk) && loc.type === TYPE_JUNK) {
+                            continue;
+                        }
+                        entry.push(["location", loc, item.label ?? value.label]);
+                    }
                 }
             }
 
@@ -68,26 +92,31 @@ export default class HintHelper {
             finalHints.push(entry);
         }
 
+        console.log(finalHints);
+
         if(limit !== null) {
             // console.log("Before limit", finalHints);
             finalHints = random.shuffle(finalHints).slice(0, limit);
         }
 
+        
+
         // console.log("About to generate", finalHints);
         for(const hint of finalHints) {
             const realHint = hint[random.next(hint.length)];
-            const loc = this.findItem(spoiler, realHint[0], world.name);
+            const [type, loc, label] = realHint;
 
             if(loc === null) {
-                console.log("Unable to find", realHint[0]);
+                console.log("Unable to find", what);
                 continue;
                 // debugger;
             }
             if(hintedLocations.indexOf(loc) !== -1) {
+                console.log("Already hinted", loc);
                 continue;
             }
             hintedLocations.push(loc);
-            const text = this.createHint(realHint[1], loc);
+            const text = this.createHint(label, loc, type);
             yield text;
         }
     }
@@ -199,13 +228,39 @@ export default class HintHelper {
 
     /**
      * 
+     * @param {import("./SpoilerLog").default} spoiler
+     * @param {string} raw 
+     * @param {string} _for 
+     */
+        static findLocation(spoiler, raw, _for) {
+            // console.log("Searching for", _for, "'s", raw);
+            for(const loc of Object.values(spoiler.worlds).map(w => w.locations).flat()) {
+                if(loc.world === _for && loc.raw === raw) {
+                    return loc;
+                }
+            }
+            return null;
+        }
+    
+
+    /**
+     * 
      * @param {string} hint 
      * @param {import("./LocationItem.js").default} loc 
      */
-    static createHint(hint, loc) {
-        if(loc.world !== loc.for) {
-            return `${hint} can be found in ${loc.world}'s ${loc.regionArea}`;
+    static createHint(hint, loc, type) {
+        if(type === "item") {
+            if(loc.world !== loc.for) {
+                return `${hint} can be found in ${loc.world}'s ${loc.regionArea}`;
+            }
+            return `${hint} can be found in ${loc.regionArea}`;
+        } else if(type === "location") {
+            if(loc.world !== loc.for) {
+                return `${hint} rewards ${loc.for}'s ${loc.item}`;
+            }
+            return `${hint} rewards ${loc.item}`;
+        } else {
+            throw new Error("What type is " + type)
         }
-        return `${hint} can be found in ${loc.regionArea}`;
     }
 }

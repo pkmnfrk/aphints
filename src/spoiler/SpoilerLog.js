@@ -137,7 +137,7 @@ export default class SpoilerLog {
             //const sphereItem = new LocationItem(checkWorld, itemWorld, item, line);
             const sphereItem = world.locations.filter(l => l.raw === location)[0];
             if(!sphereItem) {
-                console.log("Can't find location for", location);
+                // console.log("Can't find location for", location, "(", world.name, ")");
                 return;
             }
             if(!(tempData.sphere in world.spheres)) {
