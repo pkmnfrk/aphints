@@ -11,9 +11,11 @@ const REGION_CARAVAN = "Desert Caravan";
 const REGION_DWARF = "Dwarf Cave";
 const REGION_EARTH = "Earth Cave";
 const REGION_ELF = "Elfland";
+const REGION_GAIA = "Gaia";
 const REGION_ICE = "Ice Cave";
 const REGION_LEFEIN = "Lefein";
 const REGION_MARSH = "Marsh Cave";
+const REGION_MELMOND = "Melmond";
 const REGION_MIRAGE = "Mirage Tower";
 const REGION_NORTHWEST = "Northwest Castle";
 const REGION_ORDEALS = "Castle of Ordeals";
@@ -38,11 +40,13 @@ export default class FinalFantasy extends Game {
         ["ElfPrince"]: REGION_ELF,
         ["Elfland"]: REGION_ELF,
         ["Fairy"]: REGION_CARAVAN,
+        ["Gaia"]: REGION_GAIA,
         ["IceCave"]: REGION_ICE,
         ["King"]: REGION_CONERIA,
         ["Lefein"]: REGION_LEFEIN,
         ["MarshCave"]: REGION_MARSH,
         ["Matoya"]: [REGION_PRAVOKA, "Matoya's Cave"],
+        ["Melmond"]: REGION_MELMOND,
         ["MirageTower"]: REGION_MIRAGE,
         ["Nerrick"]: REGION_DWARF,
         ["NorthwestCastle"]: REGION_NORTHWEST,
