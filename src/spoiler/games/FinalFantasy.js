@@ -72,25 +72,6 @@ export default class FinalFantasy extends Game {
         return "Path of the Crystals";
     }
 
-    // get hintCount() {
-    //     return 8;
-    // }
-
-    // get minHintCount() {
-    //     return 5;
-    // }
-    
-    // get barrenCount() {
-    //     return 2;
-    // }
-
-    // get hintScalingPercentage() {
-    //     return 0.4;
-    // }
-
-    // get hintScalingFormula() {
-    //     return easeOutSine;
-    // }
     /**
      * 
      * @param {LocationItem} item 

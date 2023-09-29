@@ -37,7 +37,7 @@ export default class Game {
         return {}
     }
 
-    get hintCount() {
+    hintCount(world) {
         return 20;
     }
 
@@ -50,6 +50,10 @@ export default class Game {
     }
 
     get barrenCount() {
+        return 3;
+    }
+
+    sometimesCount(world) {
         return 3;
     }
 
@@ -104,7 +108,7 @@ export default class Game {
         const importantChecks = random.shuffle(Object.values(world.spheres).flat());
 
         const always = [...HintHelper.createHints(spoiler, world, random, hintedLocations, this.alwaysHints)];
-        const sometimes = [...HintHelper.createHints(spoiler, world, random, hintedLocations, this.sometimesHints, totalHints !== 0 ? 3 : null)];
+        const sometimes = [...HintHelper.createHints(spoiler, world, random, hintedLocations, this.sometimesHints, totalHints !== 0 ? this.sometimesCount(world) : null)];
 
         const barren = HintHelper.createBarrenHints(spoiler, world, random, importantChecks, totalHints !== 0 ? this.barrenCount : 0);
 
@@ -114,7 +118,7 @@ export default class Game {
 
         // console.log("Total hints", totalHints);
 
-        HintHelper.populateWayHints(spoiler, world, ret, importantChecks, hintedLocations, totalHints, includeSpoilers);
+        HintHelper.populateWayHints(spoiler, world, ret, importantChecks, hintedLocations, totalHints === 0 ? 0 : this.hintCount(world), includeSpoilers);
         // console.log("final hints", ret);
 
         return ret;

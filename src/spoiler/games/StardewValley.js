@@ -157,9 +157,9 @@ export default class StardewValley extends Game {
         return "Trail of the Farmer";
     }
 
-    get hintCount() {
-        return 20;
-    }
+    // hintCount(world) {
+    //     return 20;
+    // }
 
     get alwaysHints() {
         return {

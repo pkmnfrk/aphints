@@ -167,8 +167,8 @@ export default class SuperMarioWorld extends Game {
         return "Road of the Stars";
     }
 
-    get hintCount() {
-        return 8;
+    hintCount(world) {
+        return 6;
     }
 
     get minHintCount() {

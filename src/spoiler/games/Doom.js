@@ -12,7 +12,7 @@ export default class Doom extends Game {
         return "Way of the Slayer";
     }
 
-    get hintCount() {
+    hintCount(world) {
         return 10;
     }
 
