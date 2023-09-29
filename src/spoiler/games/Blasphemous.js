@@ -153,9 +153,10 @@ export default class Blasphemous extends Game {
             case "Quicksilver":
             case "Knot of Rosary Rope":
             case "Life Upgrade":
-            case "Verses Spun from Gold":
+                return TYPE_PROGRESSION;
+
             case "Victory": //lol
-            
+            case "Verses Spun from Gold":
                 return TYPE_JUNK;
         }
         if(item.indexOf("Heart") !== -1) {
