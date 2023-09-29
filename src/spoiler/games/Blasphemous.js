@@ -105,7 +105,7 @@ export default class Blasphemous extends Game {
             case "Anklebone of Weston, the Pilgrim":
             case "Calcaneum of Persian, the Bandit":
             case "Capitate of Barock, the Herald":
-            case "Cervical Vertebra of Zicher, the Brewmaster":
+            case "Cervical vertebra of Zicher, the Brewmaster":
             case "Clavicle of Dalhuisen, the Schoolchild":
             case "Coccyx of Daniel, the Possessed":
             case "Coxal of June, the Prostitute":
@@ -121,10 +121,10 @@ export default class Blasphemous extends Game {
             case "Maxilla of Tarradax, the Cleric":
             case "Metacarpus of Hodges, the Blacksmith":
             case "Metatarsus of Rikusyo, the Traveller":
-            case "Nasal Bone of Charles, the Artist":
+            case "Nasal bone of Charles, the Artist":
             case "Navicular of Kahnnyhoo, the Murderer":
             case "Occipital of Tequila, the Metalsmith":
-            case "Parietal Bone of Lasser, the Inquisitor":
+            case "Parietal bone of Lasser, the Inquisitor":
             case "Phalanx of Aralcarim, the Archivist":
             case "Phalanx of Arthur, the Sailor":
             case "Phalanx of Brannon, the Gravedigger":
