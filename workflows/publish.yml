@@ -13,11 +13,22 @@ jobs:
         with:
           node-version: '18'
       - run: npm i
-      - run: |
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.aws_access_key_id }}" >> "$GITHUB_ENV"
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.aws_secret_access_key }}" >> "$GITHUB_ENV"
-          echo "AWS_DEFAULT_REGION=us-east-1" >> "$GITHUB_ENV"
       - run: npm run build
-      - run: ./publish.sh
-
-
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --exclude "*.html" --cache-control "public, max-age=604800, immutable" --delete
+        env:
+          SOURCE_DIR: dist
+          AWS_S3_BUCKET: mcaron-aphints-website
+          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+          AWS_DEFAULT_REGION: us-east-1
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --include "*.html" --cache-control no-cache --content-type text/html
+        env:
+          SOURCE_DIR: dist
+          AWS_S3_BUCKET: mcaron-aphints-website
+          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+          AWS_EGION: us-east-1
