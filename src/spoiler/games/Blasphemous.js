@@ -2,6 +2,7 @@ import Game from "./Game.js";
 import { TYPE_IMPORTANT, TYPE_JUNK, TYPE_PROGRESSION } from "./constants.js";
 
 const locationMatch = /^(?<region>.*?): (?<check>.*?)$/;
+const money = /^Tears of Atonement \((?<amount>\d+)\)$/
 
 const otherMatches = {
     "Amanecida": ["Amanecida", "Amanecida"],
@@ -149,11 +150,9 @@ export default class Blasphemous extends Game {
             
             case "Empty Bile Vessel":
             case "Fervour Upgrade":
-            case "Mea Culpa Upgrade":
             case "Quicksilver":
             case "Knot of Rosary Rope":
             case "Life Upgrade":
-            case "Thorn Upgrade":
             case "Verses Spun from Gold":
             case "Victory": //lol
             
@@ -162,7 +161,12 @@ export default class Blasphemous extends Game {
         if(item.indexOf("Heart") !== -1) {
             return TYPE_IMPORTANT;
         }
-        if(item.indexOf("Tears of Atonement") !== -1) {
+        let result = money.exec(item);
+        if(result) {
+            const amount = parseInt(result.groups.amount, 10);
+            if(amount >= 5000) {
+                return TYPE_IMPORTANT;
+            }
             return TYPE_JUNK;
         }
         return TYPE_IMPORTANT;
