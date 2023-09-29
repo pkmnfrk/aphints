@@ -50,7 +50,7 @@ export default function Dump({spoiler, world, onClose}) {
             : null}
 
             <HideableRegion title="All Game Items" defaultOpen={false}>
-                {createLocationTable(allItems, "items", false)}
+                {createLocationTable(allItems, "items", ["item", "type"])}
             </HideableRegion>
 
             <HideableRegion title="Playthrough" defaultOpen={false}>
@@ -67,7 +67,7 @@ export default function Dump({spoiler, world, onClose}) {
     );
 }
 
-function createLocationTable(locations, id, showFor = true) {
+function createLocationTable(locations, id, cols = ["region", "location", "check", "item", "type"]) {
     const [sortColumn, setSortColumn] = useState(null);
     const ourLocations = [...locations];
     const dir = (sortColumn && sortColumn[0] === "!") ? "desc" : "asc";
@@ -112,25 +112,25 @@ function createLocationTable(locations, id, showFor = true) {
     return (<table className={styles.dataTable}>
         <thead>
             <tr>
-                <th onClick={() => setSort("region")}>Region <SortIndicator col="region" actual={sortColumn} /></th>
-                <th onClick={() => setSort("region")}>Location</th>
-                <th onClick={() => setSort("region")}>Check</th>
+                {cols.indexOf("region") !== -1 ? <th onClick={() => setSort("region")}>Region <SortIndicator col="region" actual={sortColumn} /></th> : null}
+                {cols.indexOf("location") !== -1 ? <th onClick={() => setSort("region")}>Location</th> : null}
+                {cols.indexOf("check") !== -1 ? <th onClick={() => setSort("region")}>Check</th> : null}
                 {/* <th>Raw</th> */}
-                <th onClick={() => setSort("item")}>Item <SortIndicator col="item" actual={sortColumn} /></th>
-                <th onClick={() => setSort("type")}>Type <SortIndicator col="type" actual={sortColumn} /></th>
-                {showFor ? <th onClick={() => setSort("for")}>For <SortIndicator col="for" actual={sortColumn} /></th> : null }
+                {cols.indexOf("item") !== -1 ? <th onClick={() => setSort("item")}>Item <SortIndicator col="item" actual={sortColumn} /></th> : null}
+                {cols.indexOf("type") !== -1 ? <th onClick={() => setSort("type")}>Type <SortIndicator col="type" actual={sortColumn} /></th> : null}
+                {cols.indexOf("for") !== -1 ? <th onClick={() => setSort("for")}>For <SortIndicator col="for" actual={sortColumn} /></th> : null }
             </tr>
         </thead>
         <tbody>
         {ourLocations.map((l, ix) => (
             <tr key={ix}>
-                <td>{l.region}</td>
-                <td>{l.location}</td>
-                <td>{l.check}</td>
+                {cols.indexOf("region") !== -1 ? <td>{l.region}</td> : null}
+                {cols.indexOf("location") !== -1 ? <td>{l.location}</td> : null}
+                {cols.indexOf("check") !== -1 ? <td>{l.check}</td> : null}
                 {/* <td>{l.raw}</td> */}
-                <td>{l.item}</td>
-                <td>{l.type}</td>
-                {showFor && l.for !== l.world ? <td>{l.for}</td> : null}
+                {cols.indexOf("item") !== -1 ? <td>{l.item}</td> : null}
+                {cols.indexOf("type") !== -1 ? <td>{l.type}</td> : null}
+                {cols.indexOf("for") !== -1 && l.for !== l.world ? <td>{l.for}</td> : null}
             </tr>
         ))}
         </tbody>
